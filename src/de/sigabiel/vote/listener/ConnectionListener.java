@@ -17,8 +17,7 @@ public class ConnectionListener implements Listener {
 			// Handle the vote of the Player
 			VotePlugin.getInstance().voted(e.getPlayer());
 
-			// Remove the Player from the List so the Player wont get a reward everytime he
-			// joined
+			// Remove the Player from the List so the Player wont get a reward everytime he joined
 			VotePlugin.getInstance().getWaitingForReward().remove(e.getPlayer().getUniqueId());
 		}
 	}
