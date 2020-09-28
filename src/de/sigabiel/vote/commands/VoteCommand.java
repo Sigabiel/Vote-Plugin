@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.sigabiel.vote.VotePlugin;
-import de.sigabiel.vote.voteservice.VoteServices;
+import de.sigabiel.vote.voteservice.VoteService;
 
 public class VoteCommand implements CommandExecutor {
 
@@ -35,9 +35,8 @@ public class VoteCommand implements CommandExecutor {
 			p.sendMessage(" ");
 
 			// List every direct link to the Vote Website
-			for (VoteServices service : VoteServices.values()) {
-				if (service.isActive())
-					p.sendMessage("§7>> " + service.getVoteURL());
+			for (VoteService service : VotePlugin.getInstance().getVoteServices()) {
+				p.sendMessage("§7>> " + service.getVoteURL());
 			}
 
 			// Check if the server is already waiting for his vote
@@ -65,10 +64,10 @@ public class VoteCommand implements CommandExecutor {
 		private ArrayList<UUID> idle;
 
 		// Stores all VoteServices the server is checking for
-		private ArrayList<VoteServices> iteratingServices = new ArrayList<>();
+		private ArrayList<VoteService> iteratingServices = new ArrayList<>();
 
 		// Cache list
-		private List<VoteServices> deleteCache = new ArrayList<>();
+		private List<VoteService> deleteCache = new ArrayList<>();
 
 		public VoteIdleTimer(ArrayList<UUID> idle, UUID uuid, String username) {
 			this.uuid = uuid;
@@ -81,9 +80,8 @@ public class VoteCommand implements CommandExecutor {
 		private void startTimer() {
 
 			// Loads every active service in the checking List
-			for (VoteServices service : VoteServices.values()) {
-				if (service.isActive())
-					iteratingServices.add(service);
+			for (VoteService service : VotePlugin.getInstance().getVoteServices()) {
+				iteratingServices.add(service);
 			}
 
 			// Adding Player to the checking Queue
@@ -97,7 +95,7 @@ public class VoteCommand implements CommandExecutor {
 					deleteCache.clear();
 
 					// Iterate through every active Service
-					for (VoteServices service : iteratingServices) {
+					for (VoteService service : iteratingServices) {
 
 						// Check if the current service wasn't claimed
 						if (VotePlugin.getInstance().getVoteManager().hasVotedAndNotClaimed(service, username)) {
@@ -107,19 +105,27 @@ public class VoteCommand implements CommandExecutor {
 							if (p != null) {
 
 								// Give the Player his reward
-								VotePlugin.getInstance().voted(p);
+								VotePlugin.getInstance().getServer().getScheduler()
+										.scheduleSyncDelayedTask(VotePlugin.getInstance(), new Runnable() {
+
+											@Override
+											public void run() {
+												VotePlugin.getInstance().voted(service, p);
+
+											}
+										});
 
 								deleteCache.add(service);
 							} else
 
 								// Add the Player to the waiting-to-rejoin queue
-								VotePlugin.getInstance().getWaitingForReward().add(uuid);
+								VotePlugin.getInstance().getWaitingForReward().put(uuid, service);
 
 						}
 					}
 
 					// Delete all services the player voted for from the service list
-					for (VoteServices service : deleteCache) {
+					for (VoteService service : deleteCache) {
 						iteratingServices.remove(service);
 					}
 

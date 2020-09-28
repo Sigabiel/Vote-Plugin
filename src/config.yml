@@ -1,0 +1,19 @@
+
+# prefix of server
+prefix: '§7[§cServer§7] >> '
+
+# add your services here:
+
+service:
+  Minecraft-MP:
+    key: 'YourKey'
+    voteurl: 'https://minecraft-mp.com/server/YOURESERVER'
+    checkvoteurl: 'https://minecraft-mp.com/api/?object=votes&element=claim&key=%s&username=%s'
+    claimedvoteurl: 'https://minecraft-mp.com/api/?action=post&object=votes&element=claim&key=%s&username=%s'
+  
+  Minecraft-Server-EU:
+    key: 'YourKey'
+    voteurl: 'https://minecraft-server.eu/server/YOURESERVER'
+    checkvoteurl: 'https://minecraft-server.eu/api/v1/?object=votes&element=claim&key=%s&username=%s'
+    claimedvoteurl: 'https://minecraft-server.eu/api/v1/?action=post&object=votes&element=claim&key=%s&username=%s'
+    

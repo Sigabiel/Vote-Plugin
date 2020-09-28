@@ -12,10 +12,11 @@ public class ConnectionListener implements Listener {
 	public void onJoin(PlayerJoinEvent e) {
 
 		// Check if joined player voted while he disconnected
-		if (VotePlugin.getInstance().getWaitingForReward().contains(e.getPlayer().getUniqueId())) {
+		if (VotePlugin.getInstance().getWaitingForReward().containsKey(e.getPlayer().getUniqueId())) {
 
 			// Handle the vote of the Player
-			VotePlugin.getInstance().voted(e.getPlayer());
+			VotePlugin.getInstance().voted(
+					VotePlugin.getInstance().getWaitingForReward().get(e.getPlayer().getUniqueId()), e.getPlayer());
 
 			// Remove the Player from the List so the Player wont get a reward everytime he joined
 			VotePlugin.getInstance().getWaitingForReward().remove(e.getPlayer().getUniqueId());

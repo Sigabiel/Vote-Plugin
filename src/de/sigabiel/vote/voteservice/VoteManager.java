@@ -13,20 +13,18 @@ public class VoteManager {
 	 * @param name    Name of the player that should be checked
 	 * @return returns if the player voted and dind't claim it
 	 */
-	public boolean hasVotedAndNotClaimed(VoteServices service, String name) {
+	public boolean hasVotedAndNotClaimed(VoteService service, String name) {
 
 		// Get content of the Checkwebsite using the link from the enum
 		String content = getContent(String.format(service.getCheckVoteURL(), service.getKey(), name));
+		boolean hasVoted = content.equals("1");
 
-		if (content.equals("1")) {
-
+		if (hasVoted) {
 			// Player voted so the server is claiming the vote
 			claimVote(service, name);
-
-			return true;
-		} else {
-			return false;
 		}
+
+		return hasVoted;
 
 	}
 
@@ -37,7 +35,7 @@ public class VoteManager {
 	 * 
 	 * 
 	 */
-	private void claimVote(VoteServices service, String name) {
+	private void claimVote(VoteService service, String name) {
 
 		// Generate the claim link by using the service and name parameter
 		String link = String.format(service.getClaimVoteURL(), service.getKey(), name);
