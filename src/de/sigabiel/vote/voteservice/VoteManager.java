@@ -9,6 +9,8 @@ public class VoteManager {
 
 	/**
 	 * 
+	 * Checks if the player has voted for the specific service
+	 * 
 	 * @param service Service which should be checked
 	 * @param name    Name of the player that should be checked
 	 * @return returns if the player voted and dind't claim it
@@ -29,6 +31,7 @@ public class VoteManager {
 	}
 
 	/**
+	 * Calls the website of the service to claim the vote.
 	 * 
 	 * @param service Service which the vote should be claimed on
 	 * @param name    Name of the Player
@@ -55,9 +58,10 @@ public class VoteManager {
 	}
 
 	/**
+	 * Get page content
 	 * 
 	 * @param link The link the method should get the content of
-	 * @return returns the content of the link
+	 * @return returns the content of the link as a String
 	 */
 	private String getContent(String link) {
 		try {

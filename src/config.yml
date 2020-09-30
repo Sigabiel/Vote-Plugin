@@ -1,6 +1,10 @@
 
+
 # prefix of server
 prefix: '§7[§cServer§7] >> '
+
+# How long the server should check if the player voted after typing /vote in minutes
+maxminutes: 5
 
 # add your services here:
 
