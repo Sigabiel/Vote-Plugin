@@ -18,7 +18,7 @@ import de.sigabiel.vote.voteservice.VoteService;
 public class VoteCommand implements CommandExecutor {
 
 	// Stores all players who are voting right now
-	private ArrayList<UUID> idle = new ArrayList<>();
+	protected ArrayList<UUID> idle = new ArrayList<>();
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
@@ -61,7 +61,6 @@ public class VoteCommand implements CommandExecutor {
 		private String username;
 
 		// Reference to the original idle list
-		private ArrayList<UUID> idle;
 
 		// Stores all VoteServices the server is checking for
 		private ArrayList<VoteService> iteratingServices = new ArrayList<>();
@@ -71,7 +70,6 @@ public class VoteCommand implements CommandExecutor {
 
 		public VoteIdleTimer(ArrayList<UUID> idle, UUID uuid, String username) {
 			this.uuid = uuid;
-			this.idle = idle;
 			this.username = username;
 
 			startTimer();
